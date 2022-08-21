@@ -8,6 +8,14 @@
         <name>Bitestring</name>
         <email></email>
     </author>
-    <updated>Unknown</updated>
-    
+    <updated>2021-07-10T00:00:00Z</updated>
+    <entry>
+    <title>Quick guide to basic Date/Time operations in Haskell</title>
+    <link href="https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html" />
+    <id>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</id>
+    <published>2021-07-10T00:00:00Z</published>
+    <updated>2021-07-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[Quick guide to basic Date/Time operations in Haskell]]></summary>
+</entry>
+
 </feed>

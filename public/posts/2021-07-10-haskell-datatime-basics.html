@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quick guide to basic Date/Time operations in Haskell - Bitestring's Blog</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/default.css" />
+  <link rel="stylesheet" href="../css/syntax.css" />
+</head>
+
+<body>
+  <div class="container p-4">
+    <header class="text-center site-header">
+      <a class="fw-bold fs-5 text-dark" href="../">Bitestring's Blog</a>
+
+      <div class="d-flex justify-content-center my-md-3">
+        <nav class="nav flex-column flex-md-row my-3 my-md-auto">
+          <a class="nav-link" href="../">Posts</a>
+          <a class="nav-link" href="../about.html">About</a>
+          <a class="nav-link" href="../atom.xml">Atom</a>
+          <a class="nav-link" href="../rss.xml">RSS</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="my-4" role="main">
+      <h1>Quick guide to basic Date/Time operations in Haskell</h1>
+      <article>
+    <section class="header fst-italic my-3">
+        Posted on July 10, 2021
+    </section>
+    <section>
+        <p>Recently I had to write end to end tests for my personal web project. I decided to write tests in Haskell so I don’t need to debug runtime errors in tests and I can also utilize popular property testing libraries like <a href="https://www.cse.chalmers.se/~rjmh/QuickCheck">QuickCheck</a> and <a href="https://hedgehog.qa">Hedgehog</a> to test certain properties about each page and endpoint.</p>
+<p>Many of the requests to the web application involved generating and sending timestamps in the universal ISO 8601 format. I’m documenting here the functions I’ve discovered for handling date and time in Haskell so I can refer to this later when required and also might help others.</p>
+<h2 id="time-package"><code>time</code> package</h2>
+<p><a href="https://hackage.haskell.org/package/time">time</a> package is the de-facto standard for date/time representation and manipulation in Haskell. The types in the package are designed in such a way, that it will not allow meaning less operations. It is not uncommon for developers coming from mainstream programming languages like C#, JavaScript or Python to get frustated with <code>time</code> package.</p>
+<p>The reason date and time is easy to deal with in those languages is because they allow invalid representations of date/time. For example, C# has only <code>DateTime</code> and <code>TimeSpan</code> types for all kinds of representation. Let’s say you want to build an alarm app and would like to represent daily wake up time (say 7am), you still have to use <code>DateTime</code> or <code>TimeSpan</code>. Neither of that is accurate representation. Why? Because you’ve no clue if <code>DateTime</code> is your birthday in local timezone or an alarm time or end of the world in UTC. It depends on the context of the value’s usage.</p>
+<p>In fact that is why third party libraries like <a href="https://nodatime.org/">NodaTime</a> or <a href="https://www.joda.org/joda-time/">Joda-Time</a> exist for C# and Java respectively to replace the primitive and error prone types.</p>
+<p>No wonder, <code>time</code> package follows Haskell’s philosophy of correctness through types.</p>
+<h2 id="types">Types</h2>
+<p>Here are the most commonly used date and time types provided by the <code>time</code> package under <code>Data.Time</code> module.</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>UTCTime</code></td>
+<td>An instant in UTC representing both date and time. This is the most common type you would want to use.</td>
+</tr>
+<tr class="even">
+<td><code>NominalDiffTime</code></td>
+<td>Length of time or interval between two <code>UTCTime</code>, as measured by UTC.</td>
+</tr>
+<tr class="odd">
+<td><code>Day</code></td>
+<td>Represents only date without time and TimeZone info.</td>
+</tr>
+<tr class="even">
+<td><code>TimeOfDay</code></td>
+<td>Represents only time.</td>
+</tr>
+<tr class="odd">
+<td><code>LocalTime</code></td>
+<td>Date with Time (Combination of <code>Day</code> and <code>TimeOfDay</code>) without TimeZone info.</td>
+</tr>
+<tr class="even">
+<td><code>TimeZone</code></td>
+<td>Whole number of minutes offset from UTC, together with a name.</td>
+</tr>
+<tr class="odd">
+<td><code>ZonedTime</code></td>
+<td>Date with Time (Combination of <code>Day</code> and <code>TimeOfDay</code>) with TimeZone info.</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+These are only basic types. There are even richer types that you can find here from the official <a href="https://hackage.haskell.org/package/time-1.12/docs/Data-Time.html">quick start guide</a>.</p>
+<h2 id="get-current-local-time">Get current Local Time</h2>
+<p>Most of the date and time functions in Haskell are pure functions. But getting current time in a function makes it non-deterministic and not referentially transparent. So <code>getZonedTime</code> produces an IO monad with the type <code>IO ZonedTime</code>.</p>
+<p><code>getZonedTime :: IO ZonedTime</code> is what you need to get the current local time along with local timezone information.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Time</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    now <span class="ot">&lt;-</span> getZonedTime</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span> now                <span class="co">-- 2021-07-06 23:57:48.187103629 IST</span></span></code></pre></div>
+<h2 id="get-current-epoch-unix-time">Get current Epoch (Unix) time</h2>
+<p>Epoch is an Unix time standard where time is represented as seconds elapsed since 1970-01-01 00:00 UTC. This format is easy to parse and transmit over wire since it is basically an integer. <code>getPOSIXTime :: IO POSIXTime</code> from <code>Data.Time.Clock.POSIX</code> can be used to get current epoch time.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Time.Clock.POSIX</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    epochNow <span class="ot">&lt;-</span> getPOSIXTime</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span> <span class="op">$</span> <span class="fu">round</span> epochNow   <span class="co">-- 1625594110</span></span></code></pre></div>
+<h2 id="get-current-utc-time">Get current UTC Time</h2>
+<p><code>getCurrentTime :: IO UTCTime</code> is what you need to get the current UTC time.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Time</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    utcNow <span class="ot">&lt;-</span> getCurrentTime</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span> utcNow            <span class="co">-- 2021-07-06 18:28:51.693103262 UTC</span></span></code></pre></div>
+<h2 id="add-to-utctime">Add to UTCTime</h2>
+<p>Arithmetic operations on UTCTime involves additional type called <code>NominalDiffTime</code> which is basically an integer type that reperesents length of time (for example, 3000 seconds). Let’s say you want to add one hour to the UTCTime, first you’ve to construct <code>NominalDiffTime</code>. Fortunately, <code>NominalDiffTime</code> supports <code>Num</code> instance which means you can construct an instance using <code>fromInteger</code>. <code>fromInteger</code> treats given argument as seconds and produces a <code>NominalDiffTime</code> instance which can then be used to add to UTCTime.</p>
+<p><code>addUTCTime</code> function takes a <code>UTCTime</code> and <code>NominalDiffTime</code> and evaluates to the <code>UTCTime</code> with the time added.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ot">oneHour ::</span> <span class="dt">NominalDiffTime</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>oneHour <span class="ot">=</span> <span class="fu">fromInteger</span> <span class="dv">3600</span>          <span class="co">-- secs</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ot">addOneHour ::</span> <span class="dt">UTCTime</span> <span class="ot">-&gt;</span> <span class="dt">UTCTime</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>addOneHour x <span class="ot">=</span> addUTCTime oneHour x</span></code></pre></div>
+<h5 id="subtract-from-utctime">Subtract from UTCTime</h5>
+<p>Just <code>negate</code> the <code>NominalDiffTime</code> to subtract.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">oneHour ::</span> <span class="dt">NominalDiffTime</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>oneHour <span class="ot">=</span> <span class="fu">fromInteger</span> <span class="dv">3600</span>          <span class="co">-- secs</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ot">subtractOneHour ::</span> <span class="dt">UTCTime</span> <span class="ot">-&gt;</span> <span class="dt">UTCTime</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>subtractOneHour x <span class="ot">=</span> addUTCTime (<span class="fu">negate</span> oneHour) x</span></code></pre></div>
+<h2 id="formatting">Formatting</h2>
+<p>Displaying or sending date/time over wire involves converting the type into a string format. So <code>time</code> package provides these facilities through <code>FormatTime</code> typeclass. Most of the date/time types support <code>FormatTime</code> instance which give us a function called <code>formatTime</code> to produce a string in the desired format.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>formatTime</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ot">::</span> <span class="dt">FormatTime</span> t</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ot">=&gt;</span> <span class="dt">TimeLocale</span>           <span class="co">-- Type that provides functionalities to produce name of weekday, month, AM/PM symbols, timezones etc. in a particular locale. We have also predefined `TimeLocale` such as `defaultTimeLocale` for English.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> <span class="dt">String</span>               <span class="co">-- Format string like `&quot;%H:%M&quot;` or `&quot;%Y-%m-%d&quot;`. Complete specification is [documented here](https://hackage.haskell.org/package/time-1.12/docs/Data-Time-Format.html).</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> t                    <span class="co">-- One of the date/time types such as `UTCTime` or `LocalTime`.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> <span class="dt">String</span>               <span class="co">-- Return the formatted string</span></span></code></pre></div>
+<p><strong>Example usage</strong></p>
+<hr />
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Time</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ot">printTime ::</span> <span class="dt">UTCTime</span> <span class="ot">-&gt;</span> <span class="dt">String</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>printTime x <span class="ot">=</span> formatTime defaultTimeLocale <span class="st">&quot;%Y-%m-%d %H:%M&quot;</span> x</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              <span class="co">-- produces &quot;2021-07-05 14:40&quot;</span></span></code></pre></div>
+<hr />
+<h3 id="formatting-to-iso8601">Formatting to ISO8601</h3>
+<p>Most applications need to serialize date/time values to the standard ISO8601 format. Though you can use the regular <code>formatTime</code> function, it involves more ceremony. Luckily, this facility is already available through <code>Format</code> typeclass from the <code>Data.Time.Format.ISO8601</code> module.</p>
+<p>You can use either</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">formatShow ::</span> <span class="dt">Format</span> t <span class="ot">-&gt;</span> t <span class="ot">-&gt;</span> <span class="dt">String</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ot">formatShowM ::</span> <span class="dt">Format</span> t <span class="ot">-&gt;</span> t <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">String</span></span></code></pre></div>
+<p>function depending on the level of type safety you need.</p>
+<p><strong>Example usage</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ot">formatUTCToISO8601 ::</span> <span class="dt">UTCTime</span> <span class="ot">-&gt;</span> <span class="dt">String</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>formatUTCToISO8601 x <span class="ot">=</span> formatShow iso8601Format x  <span class="co">-- produces &quot;2021-07-05T14:40:25.436865727Z&quot;</span></span></code></pre></div>
+<p>Note: ISO8601 string can be generated from not just <code>UTCTime</code> but also from <code>Day</code>, <code>LocalTime</code>, <code>ZonedTime</code> or any other date/time types. Because all these types comes with <code>Format t</code> instance.</p>
+<h2 id="parsing">Parsing</h2>
+<p>Just like formatting, date/time types can be constructed from string representations. It’s not uncommon for applications to construct Date type from a string like “2021-07-15”. This ability comes from a typeclass called <code>ParseTime</code> which all common date/time types implement. Use the <code>parseTimeM</code> function to construct a type from string.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>parseTimeM</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ot">::</span> (<span class="dt">MonadFail</span> m, <span class="dt">ParseTime</span> t)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ot">=&gt;</span> <span class="dt">Bool</span>                     <span class="co">-- Accept leading and trailing whitespace?</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> <span class="dt">TimeLocale</span>               <span class="co">-- Time locale like defaultTimeLocale</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> <span class="dt">String</span>                   <span class="co">-- Format string like &quot;%Y-%-m-%-d&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> <span class="dt">String</span>                   <span class="co">-- Input string like &quot;2010-3-04&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> m t                      <span class="co">-- Return the time value, or fail if the input could not be parsed using the given format.</span></span></code></pre></div>
+<p><strong>Example usage</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ot">stringToDay ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Day</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>stringToDay s <span class="ot">=</span> parseTimeM <span class="dt">True</span> defaultTimeLocale <span class="st">&quot;%Y-%m-%d %H:%M&quot;</span> <span class="st">&quot;2020-09-04 12:30&quot;</span><span class="ot"> ::</span> <span class="dt">Maybe</span> <span class="dt">LocalTime</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                <span class="co">-- evaluates to Just 2020-09-04 12:30:00</span></span></code></pre></div>
+<h3 id="parsing-from-iso8601">Parsing from ISO8601</h3>
+<p>If you have a ISO8601 timestamp as a string, it can be easily converted to <code>UTCTime</code> through <code>iso8601ParseM</code> function from <code>Data.Time.Format.ISO8601</code> module.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>iso8601ParseM</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ot">::</span> (<span class="dt">MonadFail</span> m, <span class="dt">ISO8601</span> t)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ot">=&gt;</span> <span class="dt">String</span>                       <span class="co">-- ISO8601 string. Example: &quot;2021-07-05T14:40:25.436865727Z&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span> m t                          <span class="co">-- Return a monad that supports MonadFail. Example: Maybe</span></span></code></pre></div>
+<p><strong>Example usage</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="kw">import</span> <span class="dt">Data.Time.Format.ISO8601</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> iso8601ParseM <span class="st">&quot;2021-07-05T14:40:25.436865727Z&quot;</span><span class="ot"> ::</span> <span class="dt">Maybe</span> <span class="dt">UTCTime</span>  <span class="co">-- produces Just 2021-07-05 14:40:25.436865727 UTC</span></span></code></pre></div>
+<p>Hope this helped you. If you need guide to even more advanced functionalities, please check out these excellent blog posts.</p>
+<p><a href="https://two-wrongs.com/haskell-time-library-tutorial">https://two-wrongs.com/haskell-time-library-tutorial</a></p>
+<p><a href="https://www.williamyaoh.com/posts/2019-09-16-time-cheatsheet.html">https://www.williamyaoh.com/posts/2019-09-16-time-cheatsheet.html</a></p>
+<hr />
+<p><strong>References</strong></p>
+<ol type="1">
+<li><a href="https://hackage.haskell.org/package/time-1.12/docs/Data-Time.html">https://hackage.haskell.org/package/time-1.12/docs/Data-Time.html</a></li>
+<li><a href="https://two-wrongs.com/haskell-time-library-tutorial">https://two-wrongs.com/haskell-time-library-tutorial</a></li>
+<li><a href="https://www.williamyaoh.com/posts/2019-09-16-time-cheatsheet.html">https://www.williamyaoh.com/posts/2019-09-16-time-cheatsheet.html</a></li>
+<li><a href="https://wiki.haskell.org/Cookbook/Dates_And_Time">https://wiki.haskell.org/Cookbook/Dates_And_Time</a></li>
+</ol>
+    </section>
+</article>
+
+    </main>
+
+    <footer class="py-4 text-center text-muted border-top">
+      <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width: 0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is
+      licensed under a
+      <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike
+        4.0 International License</a>.
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -7,7 +7,15 @@
         <description><![CDATA[Thoughts and articles related to programming, free software, web, privacy and security.]]></description>
         <atom:link href="https://bitestring.com/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Unknown</lastBuildDate>
-        
+        <lastBuildDate>Sat, 10 Jul 2021 00:00:00 UT</lastBuildDate>
+        <item>
+    <title>Quick guide to basic Date/Time operations in Haskell</title>
+    <link>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</link>
+    <description><![CDATA[Quick guide to basic Date/Time operations in Haskell]]></description>
+    <pubDate>Sat, 10 Jul 2021 00:00:00 UT</pubDate>
+    <guid>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</guid>
+    <dc:creator>Bitestring</dc:creator>
+</item>
+
     </channel>
 </rss>
