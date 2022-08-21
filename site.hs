@@ -20,7 +20,7 @@ myFeedConfiguration =
 hakyllConfig :: Configuration
 hakyllConfig =
   defaultConfiguration
-    { destinationDirectory = "public"
+    { destinationDirectory = "docs"
     }
 
 --------------------------------------------------------------------------------
