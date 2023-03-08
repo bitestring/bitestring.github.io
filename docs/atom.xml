@@ -8,8 +8,16 @@
         <name>Bitestring</name>
         <email></email>
     </author>
-    <updated>2021-07-10T00:00:00Z</updated>
+    <updated>2023-03-19T00:00:00Z</updated>
     <entry>
+    <title>Web fingerprinting is worse than I thought</title>
+    <link href="https://bitestring.com/posts/2023-03-19-web-fingerprinting-is-worse-than-I-thought.html" />
+    <id>https://bitestring.com/posts/2023-03-19-web-fingerprinting-is-worse-than-I-thought.html</id>
+    <published>2023-03-19T00:00:00Z</published>
+    <updated>2023-03-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[Discussing current state of web fingerprinting and how to protect yourself]]></summary>
+</entry>
+<entry>
     <title>Quick guide to basic Date/Time operations in Haskell</title>
     <link href="https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html" />
     <id>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</id>
