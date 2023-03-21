@@ -76,7 +76,7 @@ Chromium (Chrome) is built by Google, an advertisement company which  tracks its
 
 Visit 1 | Visit 2 | Private Browsing
 ---|---|---
-[<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_1.webp" alt="Visit 1 to fingerprint.com on Chromium" />](/images/2023-03-19-fingerprinting/chromium_visit_1.webp) | [<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_2.webp" alt="Visit 2 to fingerprint.com on Chromium" />](/images/2023-03-19-fingerprinting/chromium_visit_2.webp) | [<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_private_mode.webp" alt="Visit to fingerprint.com on Chromium Private Browsing mode" />](/images/2023-03-19-fingerprinting/chromium_visit_2.webp) 
+[<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_1.webp" alt="Visit 1 to fingerprint.com on Chromium" />](/images/2023-03-19-fingerprinting/chromium_visit_1.webp) | [<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_2.webp" alt="Visit 2 to fingerprint.com on Chromium" />](/images/2023-03-19-fingerprinting/chromium_visit_2.webp) | [<img class="img-responsive" src="/images/2023-03-19-fingerprinting/chromium_visit_private_mode.webp" alt="Visit to fingerprint.com on Chromium Private Browsing mode" />](/images/2023-03-19-fingerprinting/chromium_visit_private_mode.webp) 
 
 FingerprintJS generates the same ID in each Chromium session, thus it can identify its users across different sessions.
 
