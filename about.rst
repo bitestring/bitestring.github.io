@@ -1,7 +1,8 @@
 ---
 title: About
 ---
-I'm a software developer with interests in functional programming, free software, web, privacy and security in general. I'll record articles that I think might be useful for myself later or others.
+
+I am a software developer with interests in distributed systems, functional programming and free/libre software in general. I write articles that are personally interesting to me on computing and programming in general.
 
 This blog is fully made using following free/open source software.
 
