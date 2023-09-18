@@ -7,8 +7,16 @@
         <description><![CDATA[Thoughts and articles related to programming, free software, web, privacy and security.]]></description>
         <atom:link href="https://bitestring.com/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 19 Mar 2023 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Mon, 18 Sep 2023 00:00:00 UT</lastBuildDate>
         <item>
+    <title>A little tip to improve rust-analyzer memory usage</title>
+    <link>https://bitestring.com/posts/2023-09-18-improve-rust-analyzer-memory-usage.html</link>
+    <description><![CDATA[Rust-Analyzer is a LSP server for IDEs like VSCode, Emacs, Vim etc. However it suffers from very high memory usage in some use cases. This blog post provides a tip to reduce memory usage if you are using FFIs and bindgen in your Rust projects.]]></description>
+    <pubDate>Mon, 18 Sep 2023 00:00:00 UT</pubDate>
+    <guid>https://bitestring.com/posts/2023-09-18-improve-rust-analyzer-memory-usage.html</guid>
+    <dc:creator>Bitestring</dc:creator>
+</item>
+<item>
     <title>Web fingerprinting is worse than I thought</title>
     <link>https://bitestring.com/posts/2023-03-19-web-fingerprinting-is-worse-than-I-thought.html</link>
     <description><![CDATA[Discussing current state of web fingerprinting and how to protect yourself]]></description>

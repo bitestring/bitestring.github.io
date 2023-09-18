@@ -6,10 +6,18 @@
     <id>https://bitestring.com/atom.xml</id>
     <author>
         <name>Bitestring</name>
-        <email></email>
+        
     </author>
-    <updated>2023-03-19T00:00:00Z</updated>
+    <updated>2023-09-18T00:00:00Z</updated>
     <entry>
+    <title>A little tip to improve rust-analyzer memory usage</title>
+    <link href="https://bitestring.com/posts/2023-09-18-improve-rust-analyzer-memory-usage.html" />
+    <id>https://bitestring.com/posts/2023-09-18-improve-rust-analyzer-memory-usage.html</id>
+    <published>2023-09-18T00:00:00Z</published>
+    <updated>2023-09-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[Rust-Analyzer is a LSP server for IDEs like VSCode, Emacs, Vim etc. However it suffers from very high memory usage in some use cases. This blog post provides a tip to reduce memory usage if you are using FFIs and bindgen in your Rust projects.]]></summary>
+</entry>
+<entry>
     <title>Web fingerprinting is worse than I thought</title>
     <link href="https://bitestring.com/posts/2023-03-19-web-fingerprinting-is-worse-than-I-thought.html" />
     <id>https://bitestring.com/posts/2023-03-19-web-fingerprinting-is-worse-than-I-thought.html</id>
