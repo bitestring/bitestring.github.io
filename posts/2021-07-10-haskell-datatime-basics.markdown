@@ -1,6 +1,6 @@
 ---
 title: Quick guide to basic Date/Time operations in Haskell
-description: Quick guide to basic Date/Time operations in Haskell
+description: Explaining how to consume frequently used date/time functions in Haskell
 ---
 
 Recently I had to write end to end tests for my personal web project. I decided to write tests in Haskell so I don't need to debug runtime errors in tests and I can also utilize popular property testing libraries like [QuickCheck](https://www.cse.chalmers.se/~rjmh/QuickCheck) and [Hedgehog](https://hedgehog.qa) to test certain properties about each page and endpoint.

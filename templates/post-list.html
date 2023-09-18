@@ -1,6 +1,16 @@
 $for(posts)$
-<div class="row my-3">
-  <div class="col-12 col-md-9"><a class="h5" href="$url$">$title$</a></div>
-  <div class="col-12 col-md-3 text-start text-md-end"><span class="text-muted">$date$</span></div>
+<div class="row my-4">
+  <div class="col-12 col-md-9">
+    <div>
+      <a class="h5" href="$url$">$title$</a>
+    </div>
+    <div class="text-muted">
+      <small>$description$</small>
+    </div>
+  </div>
+  
+  <div class="col-12 col-md-3 text-start text-md-end">
+    <span class="text-muted">$date$</span>
+  </div>
 </div>
 $endfor$
