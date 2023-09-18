@@ -13,7 +13,7 @@ On one of my projects I had to generate some FFI bindings to some C code using [
 
 The structure of my code looks something like this
 
-#+begin_example 
+#+begin_src rust
   build.rs
   Cargo.lock
   Cargo.toml
@@ -21,7 +21,7 @@ The structure of my code looks something like this
       main.rs
       lib.rs
   wrapper.h
-#+end_example
+#+end_src
 
 ~build.rs~ consumes ~wrapper.h~ to generate bindings which are then included in ~src/lib.rs~.
 
@@ -33,7 +33,7 @@ I separated the binding generation part and the consuming part into two packages
 
 The new project structure looks like this
 
-#+begin_example
+#+begin_src rust
   Cargo.lock
   Cargo.toml
   bindings-package/
@@ -46,6 +46,6 @@ The new project structure looks like this
       src/
           main.rs
       Cargo.toml
-#+end_example
+#+end_src
 
 This structure also improved ~cargo build~ time. If you are facing high memory usage with rust-analyzer when using FFI bindings or a heavier ~build.rs~ script, try splitting your bindings into a separate package. It might help you.
