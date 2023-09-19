@@ -62,7 +62,7 @@
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    src<span class="op">/</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        main<span class="op">.</span>rs</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    Cargo<span class="op">.</span>toml</span></code></pre></div>
-<p>This structure also improved <code>cargo build</code> time. If you are facing high memory usage with rust-analyzer when using FFI bindings or a heavier <code>build.rs</code> script, try splitting your bindings into a separate package. It might help you.</p>
+<p>This structure also improved <code>cargo build</code> time. If you are facing high memory usage with rust-analyzer when using FFI bindings or a heavier <code>build.rs</code> script, try splitting it into separate packages with Cargo Workspaces. It might help you.</p>
     </section>
 </article>
 

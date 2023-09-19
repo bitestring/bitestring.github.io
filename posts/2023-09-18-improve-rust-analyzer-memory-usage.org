@@ -48,4 +48,4 @@ The new project structure looks like this
       Cargo.toml
 #+end_src
 
-This structure also improved ~cargo build~ time. If you are facing high memory usage with rust-analyzer when using FFI bindings or a heavier ~build.rs~ script, try splitting your bindings into a separate package. It might help you.
+This structure also improved ~cargo build~ time. If you are facing high memory usage with rust-analyzer when using FFI bindings or a heavier ~build.rs~ script, try splitting it into separate packages with Cargo Workspaces. It might help you.
