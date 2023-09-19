@@ -1,0 +1,36 @@
+* bitestring.github.io
+
+*** Prerequisites
+
+- Nix (or NixOS) -  https://nixos.org
+- Emacs for editing Org mode documents
+
+*** Developing
+
+Enter into development shell using on root directory of this project
+
+#+begin_example
+nix shell
+#+end_example
+
+*** Running & watching
+
+On Nix shell,
+
+#+begin_example
+stack run site watch
+#+end_example
+
+*** Building
+
+Once inside Nix shell, use Stack to build the project
+
+#+begin_example
+stack run site build
+#+end_example
+
+*** Cleaning artifacts
+
+#+begin_example
+stack run site clean
+#+end_example
