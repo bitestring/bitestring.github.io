@@ -9,6 +9,9 @@ This blog is fully made using following free/open source software.
 * Hakyll - https://jaspervdj.be/hakyll
     A static site generator written in Haskell.
 
+* Nix - https://nixos.org/
+    A functional package manager (and OS) that offers declarative builds and reproducibility.
+    
 * Bootstrap - https://getbootstrap.com
     A CSS library for designing responsive websites.
 
