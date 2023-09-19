@@ -27,8 +27,8 @@
 </entry>
 <entry>
     <title>Quick guide to basic Date/Time operations in Haskell</title>
-    <link href="https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html" />
-    <id>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</id>
+    <link href="https://bitestring.com/posts/2021-07-10-haskell-datetime-basics.html" />
+    <id>https://bitestring.com/posts/2021-07-10-haskell-datetime-basics.html</id>
     <published>2021-07-10T00:00:00Z</published>
     <updated>2021-07-10T00:00:00Z</updated>
     <summary type="html"><![CDATA[Explaining how to consume frequently used date/time functions in Haskell]]></summary>

@@ -26,10 +26,10 @@
 </item>
 <item>
     <title>Quick guide to basic Date/Time operations in Haskell</title>
-    <link>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</link>
+    <link>https://bitestring.com/posts/2021-07-10-haskell-datetime-basics.html</link>
     <description><![CDATA[Explaining how to consume frequently used date/time functions in Haskell]]></description>
     <pubDate>Sat, 10 Jul 2021 00:00:00 UT</pubDate>
-    <guid>https://bitestring.com/posts/2021-07-10-haskell-datatime-basics.html</guid>
+    <guid>https://bitestring.com/posts/2021-07-10-haskell-datetime-basics.html</guid>
     <dc:creator>Bitestring</dc:creator>
 </item>
 
