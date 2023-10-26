@@ -16,4 +16,4 @@ This blog is made fully using following free/open-source software.
   A CSS library for designing responsive websites.
 
 
-All contents in this blog are available under Creative Commons Share Alike (CC BY-SA)  License.
+All contents in this blog are available under [[http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1][Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License]].
