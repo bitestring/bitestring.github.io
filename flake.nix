@@ -11,6 +11,9 @@
       pkgs = nixpkgs.legacyPackages.${system};
       hs = pkgs.haskell.packages."ghc963"; # need to match Stackage LTS version from stack.yaml resolver
       dependencies = with pkgs; [
+        # Nix deps
+        nixpkgs-fmt
+
         # system deps
         zlib
         pkg-config
@@ -26,9 +29,8 @@
         hs.retrie # Haskell refactoring tool
       ];
 
-    in {
-      # packages.${system}.default = pkgs.hello;
-
+    in
+    {
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = dependencies;
         LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath dependencies;
