@@ -9,7 +9,7 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      hs = pkgs.haskell.packages."ghc965"; # need to match Stackage LTS version from stack.yaml resolver
+      hs = pkgs.haskell.packages."ghc967"; # need to match Stackage LTS version from stack.yaml resolver
       dependencies = with pkgs; [
         # Nix deps
         nixd
